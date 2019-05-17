@@ -75,7 +75,7 @@ class WPGraphQL_CPT_UI {
 		
 		if ( 'edit' === $tab ) {
 			$post_types = cptui_get_post_type_data();
-			$selected_post_type = cptui_get_current_post_type( $post_type_deleted );
+			$selected_post_type = cptui_get_current_post_type( false );
 			if ( $selected_post_type ) {
 				if ( array_key_exists( $selected_post_type, $post_types ) ) {
 					$current = $post_types[ $selected_post_type ];
