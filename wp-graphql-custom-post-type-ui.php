@@ -1,10 +1,10 @@
 <?php
-/** 
+/**
 * Plugin Name: WPGraphQL Custom Post Type UI
 * Description: Adds WPGraphQL settings to Custom Post Type UI
-* Author: rachelbahl
-* Author URI: https://wpgraphqlgal.com
-* Version: 1.0
+* Author: WPGraphQL, rachelbahl, jasonbahl
+* Author URI: https://wpgraphql.com
+* Version: 1.1
 * Text Domain: wp-graphql-custom-post-type-ui
 * Requires at least: 5.1.0
 * Tested up to: 5.2.0
@@ -15,18 +15,18 @@
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
-} 
+}
 
 /**
-* This class creates settings for Custom Post Type UI to show Custom Post Types in GraphQL	
+* This class creates settings for Custom Post Type UI to show Custom Post Types in GraphQL
 */
 
 class WPGraphQL_CPT_UI {
-	
+
 	protected $show_in_graphql = false;
 	protected $graphql_single_name = '';
 	protected $graphql_plural_name = '';
-	
+
 	/**
 	* Initializes the plugin functionality
 	*/
@@ -43,7 +43,7 @@ class WPGraphQL_CPT_UI {
 		add_filter( 'cptui_pre_register_post_type', [ $this, 'add_graphql_settings_to_registry' ], 10, 3 );
 		add_filter( 'cptui_pre_save_post_type', [ $this, 'save_graphql_settings' ], 10, 2 );
 	}
-	
+
 	/**
 	* Set defaults for post type and taxonomy settings
 	*/
@@ -53,7 +53,7 @@ class WPGraphQL_CPT_UI {
 		$args['graphql_plural_name' ] = ! empty( $type['graphql_plural_name'] ) ?  $type['graphql_plural_name'] : null;
 		return $args;
 	}
-	
+
 	/**
 	* Capture post type settings from form submission for saving
 	*/
@@ -71,9 +71,9 @@ class WPGraphQL_CPT_UI {
 		$this->graphql_single_name = isset( $data[ 'cpt_custom_tax' ]['graphql_single_name'] ) ? $data[ 'cpt_custom_tax' ]['graphql_single_name'] : '';
 		$this->graphql_plural_name = isset( $data[ 'cpt_custom_tax' ]['graphql_plural_name'] ) ? $data[ 'cpt_custom_tax' ]['graphql_plural_name'] : '';
 	}
-	
+
 	/**
-	* Save values from form submission	
+	* Save values from form submission
 	*/
 	public function save_graphql_settings( $type, $name ) {
 		$type[ $name ]['show_in_graphql'] = $this->show_in_graphql;
@@ -226,7 +226,7 @@ class WPGraphQL_CPT_UI {
         </div>
 		<?php
 	}
-	
+
 }
 
 add_action( 'plugins_loaded', 'init_wpgraphql_cptui' );

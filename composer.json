@@ -1,0 +1,16 @@
+{
+  "name": "wp-graphql/wp-graphql-custom-post-type-ui",
+  "description": "Add your Custom Post Types and Custom Taxonomies to the WPGraphQL Schema using Custom Post Type UI plugin",
+  "type": "wordpress-plugin",
+  "license": "GPL-3.0-or-later",
+  "authors": [
+    {
+      "name": "Jason Bahl",
+      "email": "jasonbahl@mac.com"
+    },
+    {
+      "name": "Rachel Bahl",
+      "email": "rachelbahl@gmail.com"
+    }
+  ]
+}
