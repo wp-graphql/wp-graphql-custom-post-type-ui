@@ -1,6 +1,8 @@
 <?php
 /**
 * Plugin Name: WPGraphQL Custom Post Type UI
+* Plugin URI: https://github.com/wp-graphql/wp-graphql-custom-post-type-ui
+* GitHub Plugin URI: https://github.com/wp-graphql/wp-graphql-custom-post-type-ui
 * Description: Adds WPGraphQL settings to Custom Post Type UI
 * Author: WPGraphQL, rachelbahl, jasonbahl
 * Author URI: https://wpgraphql.com
