@@ -68,7 +68,7 @@ class WPGraphQL_CPT_UI {
 	}
 
 	/**
-	 * Set defaults for post type and taxonomy settings
+	 * Adds the GraphQL Settings from CPT UI to the post_type and taxonomy registry args.
 	 *
 	 * @param array  $args The args for the registry
 	 * @param string $name The name of the type
@@ -78,17 +78,24 @@ class WPGraphQL_CPT_UI {
 	 */
 	public function add_graphql_settings_to_registry( array $args, string $name, array $type ): array {
 
+		// If the type is not set to show_in_graphql, return the args as-is
 		if ( ! isset( $type['show_in_graphql'] ) || true !== (bool) $type['show_in_graphql'] ) {
 			return $args;
 		}
 
+		// If the type has no graphql_plural_name, return the args as-is, but
+		// add a message to the debug log for why the Type is not in the Schema
 		if ( ! isset( $type['graphql_plural_name'] ) || empty( $type['graphql_plural_name'] ) ) {
-			graphql_debug( sprintf( __( 'The graphql_plural_name is empty for the "%s" Post Type or Taxonomy.' ), $type['name'] ) );
+			graphql_debug( sprintf( __( 'The graphql_plural_name is empty for the "%s" Post Type or Taxonomy registered by Custom Post Type UI.' ), $type['name'] ) );
+
 			return $args;
 		}
 
+		// If the type has no graphql_single_name, return the args as-is, but
+		// add a message to the debug log for why the Type is not in the Schema
 		if ( ! isset( $type['graphql_single_name'] ) || empty( $type['graphql_single_name'] ) ) {
-			graphql_debug( sprintf( __( 'The graphql_single_name is empty for the "%s" Post Type or Taxonomy.' ), $type['name'] ) );
+			graphql_debug( sprintf( __( 'The graphql_single_name is empty for the "%s" Post Type or Taxonomy registered by Custom Post Type UI.' ), $type['name'] ) );
+
 			return $args;
 		}
 
@@ -106,22 +113,9 @@ class WPGraphQL_CPT_UI {
 	 * @param array $data
 	 */
 	public function before_update_post_type( array $data ) {
-
-		if ( ! isset( $data['cpt_custom_post_type']['graphql_single_name'] ) || empty( $data['cpt_custom_post_type']['graphql_single_name'] ) ) {
-			$this->show_in_graphql = false;
-		}
-
-		if ( ! isset( $data['cpt_custom_post_type']['graphql_plural_name'] ) || empty( $data['cpt_custom_post_type']['graphql_plural_name'] ) ) {
-			$this->show_in_graphql = false;
-		}
-
-		if ( ! isset( $data['cpt_custom_post_type']['show_in_graphql'] ) || empty( $data['cpt_custom_post_type']['show_in_graphql'] ) ) {
-			$this->show_in_graphql = false;
-		}
-
-		$this->show_in_graphql     = ! empty( $data['cpt_custom_post_type']['show_in_graphql'] ) ? $data['cpt_custom_post_type']['show_in_graphql'] : false;
-		$this->graphql_single_name = ! empty( $data['cpt_custom_post_type']['graphql_single_name'] ) ? \WPGraphQL\Utils\Utils::format_type_name( $data['cpt_custom_post_type']['graphql_single_name'] ) : '';
-		$this->graphql_plural_name = ! empty( $data['cpt_custom_post_type']['graphql_plural_name'] ) ? \WPGraphQL\Utils\Utils::format_type_name( $data['cpt_custom_post_type']['graphql_plural_name'] ) : '';
+		$this->show_in_graphql     = isset( $data['cpt_custom_post_type']['show_in_graphql'] ) ? $data['cpt_custom_post_type']['show_in_graphql'] : false;
+		$this->graphql_single_name = isset( $data['cpt_custom_post_type']['graphql_single_name'] ) ? \WPGraphQL\Utils\Utils::format_type_name( $data['cpt_custom_post_type']['graphql_single_name'] ) : '';
+		$this->graphql_plural_name = isset( $data['cpt_custom_post_type']['graphql_plural_name'] ) ? \WPGraphQL\Utils\Utils::format_type_name( $data['cpt_custom_post_type']['graphql_plural_name'] ) : '';
 	}
 
 	/**
@@ -130,22 +124,9 @@ class WPGraphQL_CPT_UI {
 	 * @param array $data
 	 */
 	public function before_update_taxonomy( array $data ) {
-
-		if ( ! isset( $data['cpt_custom_tax']['graphql_single_name'] ) || empty( $data['cpt_custom_post_type']['graphql_single_name'] ) ) {
-			$this->show_in_graphql = false;
-		}
-
-		if ( ! isset( $data['cpt_custom_tax']['graphql_plural_name'] ) || empty( $data['cpt_custom_post_type']['graphql_plural_name'] ) ) {
-			$this->show_in_graphql = false;
-		}
-
-		if ( ! isset( $data['cpt_custom_tax']['show_in_graphql'] ) || empty( $data['cpt_custom_post_type']['show_in_graphql'] ) ) {
-			$this->show_in_graphql = false;
-		}
-
-		$this->show_in_graphql     = ! empty( $data['cpt_custom_tax']['show_in_graphql'] ) ? $data['cpt_custom_tax']['show_in_graphql'] : false;
-		$this->graphql_single_name = ! empty( $data['cpt_custom_tax']['graphql_single_name'] ) ? \WPGraphQL\Utils\Utils::format_type_name( $data['cpt_custom_tax']['graphql_single_name'] ) : '';
-		$this->graphql_plural_name = ! empty( $data['cpt_custom_tax']['graphql_plural_name'] ) ? \WPGraphQL\Utils\Utils::format_type_name( $data['cpt_custom_tax']['graphql_plural_name'] ) : '';
+		$this->show_in_graphql     = isset( $data['cpt_custom_tax']['show_in_graphql'] ) ? $data['cpt_custom_tax']['show_in_graphql'] : false;
+		$this->graphql_single_name = isset( $data['cpt_custom_tax']['graphql_single_name'] ) ? \WPGraphQL\Utils\Utils::format_type_name( $data['cpt_custom_tax']['graphql_single_name'] ) : '';
+		$this->graphql_plural_name = isset( $data['cpt_custom_tax']['graphql_plural_name'] ) ? \WPGraphQL\Utils\Utils::format_type_name( $data['cpt_custom_tax']['graphql_plural_name'] ) : '';
 	}
 
 	/**
@@ -163,7 +144,6 @@ class WPGraphQL_CPT_UI {
 
 		return $type;
 	}
-
 
 	/**
 	 * Add settings fields to Custom Post Type UI form
