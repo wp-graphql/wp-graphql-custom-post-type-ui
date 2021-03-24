@@ -11,6 +11,8 @@
  * Requires PHP: 5.6
  * License: GPL-3
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
+ * Plugin URI: https://github.com/wp-graphql/wp-graphql-custom-post-type-ui
+ * GitHub Plugin URI: https://github.com/wp-graphql/wp-graphql-custom-post-type-ui
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
